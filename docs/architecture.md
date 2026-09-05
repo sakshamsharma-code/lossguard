@@ -20,7 +20,9 @@ Orders / Returns / Device-Address-Payment Links (SQLite)
         Expected Loss = risk_score × refund_amount
         → tiered action: auto_approve / verify / manual_review
                     ↓
-        LLM Explanation Layer (stub — see decisions.md D1)
+        Explanation Layer (deterministic template in this build — see
+        decisions.md D1; the module is structured as the integration
+        point for a real LLM API such as Gemini/Groq)
         structured evidence JSON → human-readable case summary
         (explanation only, never decision)
                     ↓
@@ -53,10 +55,12 @@ A merchant should be able to explain in one sentence why a case was
 routed to manual review — that would not be true if a second black-box
 model made that call.
 
-**The LLM sits outside this decision path entirely.** It receives the
-final computed evidence and explains it in plain language; it has no
-ability to change the risk score, the expected loss, or the decision
-tier. See `decisions.md` §D1 for the full reasoning.
+**The explanation layer sits outside this decision path entirely.** It
+receives the final computed evidence and turns it into plain language;
+it has no ability to change the risk score, the expected loss, or the
+decision tier. In this build it is a deterministic template rather than
+a live LLM call (time-constrained scope decision, not a design
+limitation) — see `decisions.md` §D1 for the full reasoning.
 
 ## Component responsibilities
 

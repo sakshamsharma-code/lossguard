@@ -7,16 +7,27 @@ from research-notes.md and dataset-schema.md.
 
 ## D1 — LLM used only for explanation, never for decisions
 
-**Decision:** LLM (`app/explain/`) receives a structured evidence JSON and
-returns a human-readable summary. It never scores risk, never sets the
-decision tier, and is architecturally isolated (read-only module, no DB
-write access, no ability to trigger `/decision`).
+**Decision:** The explanation layer (`app/explain/explain_service.py`)
+receives a structured evidence JSON and returns a human-readable summary.
+It never scores risk, never sets the decision tier, and is architecturally
+isolated (read-only module, no DB write access, no ability to trigger
+`/decision`).
 
-**Why:** Money decisions need to be deterministic and auditable. LLMs are
-probabilistic and not reliably reproducible — using one to gate a real
-financial/account action would violate the track's "strictly defense-only"
-requirement in spirit, even if not in a literal offensive-capability sense.
-See research-notes.md §7.
+**Current implementation status:** in this submission, `explain_service.py`
+is a deterministic template — it formats the evidence fields into a
+sentence, it does not call a real LLM API. This was a conscious
+time-tradeoff, not a hidden shortcut: the function signature and evidence
+schema are already shaped so that swapping the template body for a real
+Gemini/Groq call is a same-file change. We call this out explicitly rather
+than implying a live API call, since the distinction matters for how the
+project should be evaluated.
+
+**Why isolate it this way regardless of template-vs-live:** Money
+decisions need to be deterministic and auditable. LLMs are probabilistic
+and not reliably reproducible — using one to gate a real financial/account
+action would violate the track's "strictly defense-only" requirement in
+spirit, even if not in a literal offensive-capability sense. See
+research-notes.md §7.
 
 ---
 

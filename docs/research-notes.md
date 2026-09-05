@@ -144,11 +144,18 @@ place, and where you chose not to use one."*
 - ❌ **Not used for:** fraud/no-fraud decisions, risk scoring, or any money-moving action.
   LLMs are probabilistic and not auditable in the way a rule/threshold is — money
   decisions need to be deterministic and defensible.
-- ✅ **Used for:** turning a structured evidence bundle (risk score, expected loss,
+- ✅ **Designed for:** turning a structured evidence bundle (risk score, expected loss,
   shared-device count, linked-account count, return rate, evidence confidence) into a
   concise, human-readable case summary for a merchant reviewer.
-- This directly satisfies the track's **"strictly defense-only"** bar too — the LLM
-  narrates evidence, it never gates or executes a decision.
+- **Current build status:** `app/explain/explain_service.py` implements this as a
+  deterministic template over the evidence fields, not a live LLM API call — a
+  time-tradeoff made explicit in `decisions.md` (D1) rather than left ambiguous. The
+  evidence schema is already shaped so a real Gemini/Groq call is a same-file swap.
+  The architectural argument below (LLM never gates a decision) holds regardless of
+  whether the explanation step is templated or a live call — it's a property of
+  *isolation*, not of which implementation sits behind it.
+- This directly satisfies the track's **"strictly defense-only"** bar too — the
+  explanation layer narrates evidence, it never gates or executes a decision.
 
 ---
 
@@ -193,7 +200,3 @@ place, and where you chose not to use one."*
   under limited investigation capacity)
 - General cost-sensitive learning literature on false-negative vs false-positive
   economic asymmetry in fraud detection
-
-
-
-"Our synthetic fraud-return share (14.2%) is somewhat higher than the NRF-reported 9% industry baseline, because we deliberately elevated fraud-ring behavioral return rates to overlap with genuine high-return categories (apparel) — this was necessary to demonstrate that behavior alone cannot separate fraud from genuine users, which is the core thesis this project tests."

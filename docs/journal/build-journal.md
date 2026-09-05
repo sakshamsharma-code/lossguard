@@ -81,7 +81,8 @@ inserted fraud-ring rows) and increased pool size as a safety margin.
 **Goal:** Next.js dashboard, case detail page, end-to-end demo.
 **Did:** Landing page with animated expected-loss counter, command center
 sorted by expected loss (not risk score), case detail page with animated
-risk gauge, evidence panel, AI summary (stub), and approve/verify/reject
+risk gauge, evidence panel, AI summary (deterministic template, not a live LLM
+call — see decisions.md D1), and approve/verify/reject
 actions logging to `DecisionLog`.
 **What broke:** `create-next-app` scaffold never fully completed early on
 — `package.json` was missing `next`/`react`/scripts entirely, and several

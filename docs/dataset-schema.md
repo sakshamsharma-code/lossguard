@@ -24,14 +24,14 @@ Companion to `research-notes.md`. This is the concrete, build-ready schema.
 | `shared_payment_method_count` | int | # accounts sharing this payment instrument — **hero signal for Razorpay context** |
 | `cluster_size` | int | Size of the connected-component graph this user belongs to |
 | `cluster_density` | float | How tightly connected the cluster is |
-| `days_since_cluster_formed` | int | Recent cluster formation = more suspicious |
+| `days_since_cluster_formed` | int | Recent cluster formation = more suspicious. **Defined in the schema but not populated in this build** — clusters are derived from a single static snapshot (`ring_detector.py`), not from time-stamped link history, so there is no "formation date" to compute yet. Field stays unused rather than being backed by a fake timestamp. |
 
 ### 💰 Financial exposure (for expected-loss calculation)
 | Feature | Type | Why |
 |---|---|---|
 | `order_value` | float | Rupee value of this specific order |
 | `refund_amount` | float | Actual refund exposure for this return |
-| `customer_lifetime_value` | float | High-LTV genuine customers should get less friction |
+| `customer_lifetime_value` | float | High-LTV genuine customers should get less friction. **Surfaced in the case-evidence output (from `users.ltv_score`) for the reviewer to see, but not currently fed into the ML model as a training feature** — the model uses `BEHAVIORAL_COLS` + `STRUCTURAL_COLS` only (see `train_with_graph.py`). Documented here rather than silently dropped. |
 
 **Derived (hero calculation):**
 ```
@@ -61,6 +61,12 @@ reason_code, is_fraud (label — synthetic data only, ground truth for training/
 **`device_address_payment_links`** (feeds the graph engine)
 ```
 link_id (PK), user_id (FK), device_id, address_id, payment_method_id
+```
+
+**`decision_logs`** (the human-in-the-loop record — the only place a real
+action is written)
+```
+id (PK), return_id (FK), action, reviewer_note, logged_at
 ```
 
 ---
