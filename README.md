@@ -47,11 +47,11 @@ lossguard/
 │   ├── dataset-schema.md         — feature list (behavioral / structural / financial)
 │   ├── architecture.md           — system flow diagram, component responsibilities,
 │   │                                data flow for a single case
-│   ├── decisions.md              — decision log (D1–D6): why LLM is explanation-only,
+│   ├── decisions.md              — decision log (P1–P6): why LLM is explanation-only,
 │   │                                why NetworkX not a TGNN, dataset-leakage fixes, etc.
 │   └── journal/
 │       └── build-journal.md      — day-by-day build log: what was done, what broke,
-│                                    how it was fixed (Day 1–6)
+│                                    how it was fixed (Phase 1–6)
 │
 ├── backend/                       — FastAPI service
 │   ├── requirements.txt
