@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.db
+*.joblib
+
+# Node / Next.js
+node_modules/
+.next/
+package-lock.json
+
+# Data (generated, not source)
+data/*.csv
+
+# Env
+.env
